@@ -463,7 +463,7 @@ function product(
     quantity,
     location,
     harvestTime,
-    image: `/images/products/${image}.svg`,
+    image: `/images/products/${image}.jpg`,
     description,
     status: "ACTIVE",
   };

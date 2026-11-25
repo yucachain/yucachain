@@ -19,7 +19,7 @@ export function BuyerCartPage() {
       <div className="space-y-3">
         {items.map((item) => (
           <article key={item.id} className="card flex gap-4 p-4">
-            <img src={item.product.image || "/images/products/produce.svg"} alt="" className="h-24 w-24 rounded-2xl object-cover" />
+            <img src={item.product.image || "/images/products/produce.jpg"} alt="" className="h-24 w-24 rounded-2xl object-cover" />
             <div className="flex-1">
               <h3 className="font-display text-2xl">{item.product.name}</h3>
               <p className="text-sm text-muted">

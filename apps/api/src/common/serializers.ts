@@ -43,7 +43,7 @@ export function imageForProduce(name: string) {
     ["bean", "beans"],
   ];
   const match = pairs.find(([key]) => value.includes(key));
-  return `/images/products/${match?.[1] ?? "produce"}.svg`;
+  return `/images/products/${match?.[1] ?? "produce"}.jpg`;
 }
 
 export function orderCode() {

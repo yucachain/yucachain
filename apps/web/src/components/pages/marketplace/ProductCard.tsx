@@ -8,7 +8,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="card flex h-full flex-col overflow-hidden">
       <div className="relative h-44">
-        <img src={product.image || "/images/products/produce.svg"} alt="" className="h-full w-full object-cover" />
+        <img src={product.image || "/images/products/produce.jpg"} alt="" className="h-full w-full object-cover" />
         {product.seller.verified && (
           <span className="absolute left-3 top-3">
             <Badge>Verified Seller</Badge>

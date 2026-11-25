@@ -5,7 +5,7 @@ import { formatNaira, formatQuantity } from "@/lib/formatters";
 export function ListingCard({ product }: { product: Product }) {
   return (
     <article className="card grid gap-3 p-4 sm:grid-cols-[96px_1fr_auto] sm:items-center">
-      <img src={product.image || "/images/products/produce.svg"} alt="" className="h-24 w-full rounded-2xl object-cover sm:w-24" />
+      <img src={product.image || "/images/products/produce.jpg"} alt="" className="h-24 w-full rounded-2xl object-cover sm:w-24" />
       <div>
         <h3 className="font-display text-2xl">{product.name}</h3>
         <p className="text-sm text-muted">Available: {formatQuantity(product.quantity, product.unit)}</p>

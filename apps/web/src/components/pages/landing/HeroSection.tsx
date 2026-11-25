@@ -23,7 +23,7 @@ export function HeroSection() {
       </div>
       <div className="relative">
         <div className="card rotate-[-2deg] p-4">
-          <img src="/images/products/cassava.svg" alt="Cassava bundles" className="h-52 w-full rounded-2xl object-cover" />
+          <img src="/images/products/cassava.jpg" alt="Cassava bundles" className="h-52 w-full rounded-2xl object-cover" />
           <div className="mt-3 flex items-end justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-forest-mid">Abeokuta</p>
