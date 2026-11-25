@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "dev": "tsc-watch -p tsconfig.json --onSuccess \"node dist/main.js\"",
     "build": "tsc -p tsconfig.json --outDir dist",
     "start": "node dist/main.js",
     "test": "tsx --test test/commission.spec.ts"
@@ -31,6 +31,7 @@
     "@types/node": "^22.13.10",
     "@types/passport-jwt": "^4.0.1",
     "tsx": "^4.19.3",
+    "tsc-watch": "^6.2.1",
     "typescript": "^5.8.2"
   }
 }

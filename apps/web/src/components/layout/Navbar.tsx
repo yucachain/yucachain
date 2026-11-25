@@ -21,7 +21,7 @@ export function Navbar() {
     <header className="sticky top-0 z-40 border-b border-line/80 bg-[#F7F4EC]/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/images/logo/mark.svg" alt="" className="h-9 w-9" />
+          <img src="/images/logo/Logo.png" alt="" className="h-9 w-9" />
           <span className="font-display text-2xl tracking-tight">Yucachain</span>
         </Link>
         <button className="btn-ghost lg:hidden" type="button" onClick={() => setOpen((value) => !value)}>

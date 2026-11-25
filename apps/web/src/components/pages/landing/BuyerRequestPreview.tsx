@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { BuyerRequest } from "@yucachain/shared";
 import { productService } from "@/services/product.service";
-import { formatNaira } from "@/lib/formatters";
+import { formatNaira, formatQuantity } from "@/lib/formatters";
 import { displayName } from "@/lib/utils";
 
 export function BuyerRequestPreview() {
@@ -31,7 +31,7 @@ export function BuyerRequestPreview() {
             <p className="text-xs font-semibold uppercase tracking-wide text-clay">Open request</p>
             <h3 className="mt-2 font-display text-3xl">{request.produce}</h3>
             <p className="mt-2 text-sm text-muted">
-              {request.quantity} {request.unit} · {request.destination} · Needed in {request.neededIn}
+              {formatQuantity(request.quantity, request.unit)} · {request.destination} · {request.neededIn}
             </p>
             <p className="mt-4 font-display text-3xl">{formatNaira(request.budget)}</p>
             <p className="text-sm text-muted">Budget per {request.unit}</p>

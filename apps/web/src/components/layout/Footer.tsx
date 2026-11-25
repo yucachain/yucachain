@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-2">
-            <img src="/images/logo/mark.svg" alt="" className="h-9 w-9 rounded-full bg-lime" />
+            <img src="/images/logo/Logo.png" alt="" className="h-9 w-9 rounded-full bg-lime" />
             <span className="font-display text-3xl text-white">Yucachain</span>
           </div>
           <p className="mt-4 max-w-xs text-sm text-[#C9D7CE]">Agricultural Technology Company.</p>

@@ -259,8 +259,10 @@ async function main() {
     product("prd_beans", "usr_zagadat", "cat_grains", "Brown Beans", 70000, "bag", 240, "Abeokuta", "23 Nov", "beans", "Clean brown beans in standard bags."),
   ];
 
-  for (const item of products) {
-    await prisma.product.create({ data: item });
+  for (const [index, item] of products.entries()) {
+    await prisma.product.create({
+      data: { ...item, createdAt: new Date(Date.now() - index * 60_000) },
+    });
   }
 
   const requests = [
