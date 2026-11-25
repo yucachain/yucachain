@@ -1,0 +1,230 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id
+  fullName     String
+  businessName String?
+  phone        String   @unique
+  passwordHash String
+  role         String
+  location     String?
+  bio          String?
+  verified     Boolean  @default(false)
+  rating       Float    @default(0)
+  reviewCount  Int      @default(0)
+  status       String   @default("ACTIVE")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  products      Product[]
+  buyerRequests BuyerRequest[]
+  interests     SellerInterest[]
+  cart          Cart?
+  ordersBought  Order[]        @relation("BuyerOrders")
+  ordersSold    Order[]        @relation("SellerOrders")
+  bankAccounts  BankAccount[]
+  payouts       Payout[]
+  notifications Notification[]
+}
+
+model Category {
+  id       String    @id
+  name     String    @unique
+  slug     String    @unique
+  products Product[]
+}
+
+model Product {
+  id          String   @id
+  sellerId    String
+  seller      User     @relation(fields: [sellerId], references: [id])
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  name        String
+  description String?
+  price       Int
+  unit        String
+  quantity    Int
+  location    String
+  harvestTime String?
+  image       String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@index([status, createdAt])
+  @@index([sellerId])
+}
+
+model BuyerRequest {
+  id          String   @id
+  buyerId     String
+  buyer       User     @relation(fields: [buyerId], references: [id])
+  produce     String
+  quantity    Int
+  unit        String
+  destination String
+  budget      Int
+  neededIn    String
+  notes       String?
+  status      String   @default("OPEN")
+  createdAt   DateTime @default(now())
+  interests   SellerInterest[]
+
+  @@index([status, createdAt])
+  @@index([buyerId])
+}
+
+model SellerInterest {
+  id        String       @id @default(cuid())
+  requestId String
+  request   BuyerRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  sellerId  String
+  seller    User         @relation(fields: [sellerId], references: [id])
+  message   String?
+  price     Int?
+  status    String       @default("PENDING")
+  createdAt DateTime     @default(now())
+
+  @@unique([requestId, sellerId])
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  buyerId   String     @unique
+  buyer     User       @relation(fields: [buyerId], references: [id])
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id          String   @id
+  code        String   @unique
+  buyerId     String
+  buyer       User     @relation("BuyerOrders", fields: [buyerId], references: [id])
+  sellerId    String
+  seller      User     @relation("SellerOrders", fields: [sellerId], references: [id])
+  status      String   @default("PENDING_PAYMENT")
+  subtotal    Int
+  fee         Int
+  total       Int
+  destination String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  items      OrderItem[]
+  payment    Payment?
+  delivery   Delivery?
+  commission Commission?
+
+  @@index([buyerId, createdAt])
+  @@index([sellerId, createdAt])
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  name      String
+  quantity  Int
+  unit      String
+  unitPrice Int
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  amount    Int
+  status    String   @default("PENDING")
+  method    String   @default("TRANSFER")
+  reference String   @unique
+  createdAt DateTime @default(now())
+  paidAt    DateTime?
+}
+
+model Commission {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  rate      Float
+  amount    Int
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+}
+
+model BankAccount {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  bankName      String
+  accountName   String
+  accountNumber String
+  verified      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  payouts       Payout[]
+}
+
+model Payout {
+  id            String       @id @default(cuid())
+  sellerId      String
+  seller        User         @relation(fields: [sellerId], references: [id])
+  bankAccountId String?
+  bankAccount   BankAccount? @relation(fields: [bankAccountId], references: [id])
+  amount        Int
+  status        String       @default("PENDING")
+  note          String?
+  createdAt     DateTime     @default(now())
+  decidedAt     DateTime?
+}
+
+model Delivery {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  status    String   @default("PENDING")
+  address   String?
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
+}
+
+model Setting {
+  id             String @id @default("default")
+  commissionRate Float  @default(0.05)
+  platformName   String @default("Yucachain")
+  supportEmail   String @default("support@yucachain.ng")
+}
